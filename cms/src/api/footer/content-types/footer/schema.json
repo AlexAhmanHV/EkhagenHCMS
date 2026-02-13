@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "footers",
+  "info": {
+    "singularName": "footer",
+    "pluralName": "footers",
+    "displayName": "Footer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaFooterKolumn1": { "type": "boolean", "default": true },
+    "footerKolumn1Rubrik": { "type": "string" },
+    "footerKolumn1Text": { "type": "text" },
+    "visaFooterKolumn2": { "type": "boolean", "default": true },
+    "footerKolumn2Rubrik": { "type": "string" },
+    "footerOppettiderRad1": { "type": "string" },
+    "footerOppettiderRad2": { "type": "string" },
+    "visaFooterKolumn3": { "type": "boolean", "default": true },
+    "footerKolumn3Rubrik": { "type": "string" },
+    "footerAdress": { "type": "string" },
+    "footerTelefon": { "type": "string" },
+    "footerEpost": { "type": "string" },
+    "visaFooterSkapadAv": { "type": "boolean", "default": true },
+    "footerSkapadAvLogga": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "footerSkapadAvText": { "type": "string" },
+    "footerSkapadAvLank": { "type": "string" }
+  }
+}

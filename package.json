@@ -1,0 +1,12 @@
+{
+  "name": "ekhagen-headless-playground",
+  "private": true,
+  "scripts": {
+    "dev:web": "npm --prefix web run dev",
+    "build:web": "npm --prefix web run build",
+    "start:web": "npm --prefix web run start",
+    "dev:cms": "set npm_config_offline=false&& set HTTP_PROXY=&& set HTTPS_PROXY=&& npx --cache .npm-cache -y -p node@24 -p npm@11 npm --prefix cms run develop",
+    "build:cms": "set npm_config_offline=false&& set HTTP_PROXY=&& set HTTPS_PROXY=&& npx --cache .npm-cache -y -p node@24 -p npm@11 npm --prefix cms run build",
+    "start:cms": "set npm_config_offline=false&& set HTTP_PROXY=&& set HTTPS_PROXY=&& npx --cache .npm-cache -y -p node@24 -p npm@11 npm --prefix cms run start"
+  }
+}

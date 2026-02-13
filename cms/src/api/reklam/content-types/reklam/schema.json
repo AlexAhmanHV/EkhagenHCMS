@@ -1,0 +1,59 @@
+{
+  "kind": "singleType",
+  "collectionName": "reklams",
+  "info": {
+    "singularName": "reklam",
+    "pluralName": "reklams",
+    "displayName": "Reklam-bilder"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaMenykortSektion": { "type": "boolean", "default": true },
+    "visaMenyKort1": { "type": "boolean", "default": true },
+    "visaMenyKort2": { "type": "boolean", "default": true },
+    "visaMenyKort3": { "type": "boolean", "default": true },
+    "menyKort1Etikett": { "type": "string" },
+    "menyKort1Rubrik": { "type": "string" },
+    "menyKort1Text": { "type": "text" },
+    "menyKort1Bild": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "menyKort2Etikett": { "type": "string" },
+    "menyKort2Rubrik": { "type": "string" },
+    "menyKort2Text": { "type": "text" },
+    "menyKort2Bild": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "menyKort3Etikett": { "type": "string" },
+    "menyKort3Rubrik": { "type": "string" },
+    "menyKort3Text": { "type": "text" },
+    "menyKort3Bild": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "visaEventSektion": { "type": "boolean", "default": true },
+    "visaEventOverrubrik": { "type": "boolean", "default": true },
+    "visaEventRubrik": { "type": "boolean", "default": true },
+    "visaEventText": { "type": "boolean", "default": true },
+    "visaEventKnapp": { "type": "boolean", "default": true },
+    "visaEventBild": { "type": "boolean", "default": true },
+    "eventOverrubrik": { "type": "string" },
+    "eventRubrik": { "type": "string" },
+    "eventText": { "type": "text" },
+    "eventKnappText": { "type": "string" },
+    "eventKnappLank": { "type": "string" },
+    "eventBild": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    }
+  }
+}

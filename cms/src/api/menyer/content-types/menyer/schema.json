@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "menyers",
+  "info": {
+    "singularName": "menyer",
+    "pluralName": "menyers",
+    "displayName": "Menyer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaLunchmenySektion": { "type": "boolean", "default": true },
+    "visaLunchmenyDel": { "type": "boolean", "default": true },
+    "visaKvallsmenyDel": { "type": "boolean", "default": true },
+    "visaLunchmenyRubrik": { "type": "boolean", "default": true },
+    "visaLunchmenyBeskrivning": { "type": "boolean", "default": true },
+    "visaLunchmenyPdf": { "type": "boolean", "default": true },
+    "visaKvallsmenyRubrik": { "type": "boolean", "default": true },
+    "visaKvallsmenyBeskrivning": { "type": "boolean", "default": true },
+    "visaKvallsmenyPdf": { "type": "boolean", "default": true },
+    "lunchmenyRubrik": { "type": "string" },
+    "lunchmenyBeskrivning": { "type": "text" },
+    "lunchmenyPdf": {
+      "allowedTypes": ["files"],
+      "multiple": false,
+      "type": "media"
+    },
+    "lunchmenyKnappText": { "type": "string" },
+    "kvallsmenyRubrik": { "type": "string" },
+    "kvallsmenyBeskrivning": { "type": "text" },
+    "kvallsmenyPdf": {
+      "allowedTypes": ["files"],
+      "multiple": false,
+      "type": "media"
+    },
+    "kvallsmenyKnappText": { "type": "string" }
+  }
+}

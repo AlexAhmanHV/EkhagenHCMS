@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "nyheter_homes",
+  "info": {
+    "singularName": "nyheter-home",
+    "pluralName": "nyheter-homes",
+    "displayName": "Nyheter"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaNyheterSektion": { "type": "boolean", "default": true },
+    "visaNyheterOverrubrik": { "type": "boolean", "default": true },
+    "visaNyheterRubrik": { "type": "boolean", "default": true },
+    "nyheterOverrubrik": { "type": "string" },
+    "nyheterRubrik": { "type": "string" }
+  }
+}

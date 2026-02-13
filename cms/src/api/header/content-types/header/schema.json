@@ -1,0 +1,48 @@
+{
+  "kind": "singleType",
+  "collectionName": "headers",
+  "info": {
+    "singularName": "header",
+    "pluralName": "headers",
+    "displayName": "Header (Toppen)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaToppen": { "type": "boolean", "default": true },
+    "visaOverrubrikToppen": { "type": "boolean", "default": true },
+    "visaHuvudrubrikToppen": { "type": "boolean", "default": true },
+    "visaBeskrivningToppen": { "type": "boolean", "default": true },
+    "visaKnappToppen": { "type": "boolean", "default": true },
+    "visaSekundarKnappToppen": { "type": "boolean", "default": true },
+    "visaBildToppen": { "type": "boolean", "default": true },
+    "overrubrikToppen": { "type": "string" },
+    "huvudrubrikToppen": { "type": "string" },
+    "beskrivningToppen": { "type": "text" },
+    "knappTextToppen": { "type": "string" },
+    "knappLankToppen": { "type": "string" },
+    "sekundarKnappTextToppen": { "type": "string" },
+    "bildToppen": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "visaSchema": { "type": "boolean", "default": true },
+    "visaSchemaRubrik": { "type": "boolean", "default": true },
+    "visaSchemaRad1": { "type": "boolean", "default": true },
+    "visaSchemaRad2": { "type": "boolean", "default": true },
+    "visaSchemaRad3": { "type": "boolean", "default": true },
+    "visaSchemaRad4": { "type": "boolean", "default": true },
+    "schemaRubrik": { "type": "string" },
+    "schemaRad1Text": { "type": "string" },
+    "schemaRad1Tid": { "type": "string" },
+    "schemaRad2Text": { "type": "string" },
+    "schemaRad2Tid": { "type": "string" },
+    "schemaRad3Text": { "type": "string" },
+    "schemaRad3Tid": { "type": "string" },
+    "schemaRad4Text": { "type": "string" },
+    "schemaRad4Tid": { "type": "string" }
+  }
+}

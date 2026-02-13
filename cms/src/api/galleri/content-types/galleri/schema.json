@@ -1,0 +1,46 @@
+{
+  "kind": "singleType",
+  "collectionName": "galleris",
+  "info": {
+    "singularName": "galleri",
+    "pluralName": "galleris",
+    "displayName": "Galleri (6 bilder)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "visaGalleriSektion": { "type": "boolean", "default": true },
+    "galleriBild1": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "galleriBild2": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "galleriBild3": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "galleriBild4": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "galleriBild5": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    },
+    "galleriBild6": {
+      "allowedTypes": ["images"],
+      "multiple": false,
+      "type": "media"
+    }
+  }
+}
