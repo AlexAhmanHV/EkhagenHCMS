@@ -19,10 +19,24 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "Text"
+      "targetField": "title",
+      "required": true
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
+    },
+    "metaTitle": {
+      "type": "string",
+      "maxLength": 70
+    },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 170
+    },
+    "seoNoIndex": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

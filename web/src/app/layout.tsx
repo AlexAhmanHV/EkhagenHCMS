@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Manrope, Playfair_Display } from "next/font/google";
 import ContactModalTrigger from "@/components/contact-modal-trigger";
 import { getLogoUploadImage } from "@/lib/local-images";
+import { absoluteUrl, siteName, siteUrl } from "@/lib/seo";
 import { getHomepageContent, strapiBaseUrl } from "@/lib/strapi";
 import "./globals.css";
 
@@ -17,10 +18,46 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Ekhagens Golfrestaurang",
-  description: "Modern golfrestaurang demo med Next.js och Strapi",
-};
+async function getSiteLogoUrl() {
+  const logoUploadPath = await getLogoUploadImage();
+  return logoUploadPath ? `${strapiBaseUrl}${logoUploadPath}` : "";
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const logoUrl = await getSiteLogoUrl();
+  const description = "Golfrestaurang med lunch, kvällsmeny och nyheter från köket.";
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: siteName,
+    description,
+    alternates: {
+      canonical: absoluteUrl("/"),
+    },
+    openGraph: {
+      type: "website",
+      url: absoluteUrl("/"),
+      title: siteName,
+      description,
+      siteName,
+      images: logoUrl ? [{ url: logoUrl }] : [],
+      locale: "sv_SE",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description,
+      images: logoUrl ? [logoUrl] : [],
+    },
+    icons: logoUrl
+      ? {
+          icon: [{ url: logoUrl }],
+          apple: [{ url: logoUrl }],
+          shortcut: [{ url: logoUrl }],
+        }
+      : undefined,
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -28,12 +65,32 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const home = await getHomepageContent();
-  const logoUploadPath = await getLogoUploadImage();
-  const logoUrl = logoUploadPath ? `${strapiBaseUrl}${logoUploadPath}` : "";
+  const logoUrl = await getSiteLogoUrl();
+  const restaurantJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name: siteName,
+    url: absoluteUrl("/"),
+    image: logoUrl || undefined,
+    description: home.footerKolumn1Text || home.heroDescription,
+    telephone: home.footerTelefon || undefined,
+    email: home.footerEpost || undefined,
+    address: home.footerAdress
+      ? {
+          "@type": "PostalAddress",
+          streetAddress: home.footerAdress,
+          addressCountry: "SE",
+        }
+      : undefined,
+  };
 
   return (
     <html lang="sv">
       <body className={`${manrope.variable} ${playfair.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
+        />
         <div className="page-glow" />
         <header className="site-nav">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-4 md:flex-row md:items-center md:justify-between">
@@ -41,21 +98,20 @@ export default async function RootLayout({
               {logoUrl ? (
                 <Image
                   src={logoUrl}
-                  alt="Ekhagens Golfrestaurang logga"
+                  alt="Ekhagens Restaurang logga"
                   width={44}
                   height={44}
                   className="h-11 w-11 rounded-full border border-amber-100/40 bg-white/85 object-contain p-1 shadow-sm"
-                  unoptimized
                 />
               ) : (
                 <span className="brand-dot" />
               )}
               <Link href="/" className="brand">
-                Ekhagens Golfrestaurang
+                Ekhagens Restaurang
               </Link>
             </div>
             <nav className="nav-links flex items-center gap-1 self-center md:gap-2">
-              <Link className="nav-link" href="/#cms">
+              <Link className="nav-link" href="/nyheter">
                 <svg
                   className="nav-icon"
                   viewBox="0 0 24 24"
@@ -90,6 +146,40 @@ export default async function RootLayout({
                 </svg>
                 Meny
               </Link>
+              <Link className="nav-link" href="/boka">
+                <svg
+                  className="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.9"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="5" width="16" height="15" rx="2" />
+                  <path d="M8 3v4" />
+                  <path d="M16 3v4" />
+                  <path d="M4 10h16" />
+                </svg>
+                Boka
+              </Link>
+              <Link className="nav-link" href="/om-oss">
+                <svg
+                  className="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.9"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="8" r="3.2" />
+                  <path d="M6 20c1-3.2 3.3-4.8 6-4.8s5 1.6 6 4.8" />
+                </svg>
+                Om oss
+              </Link>
               <ContactModalTrigger
                 title={home.footerKolumn3Rubrik || "Kontakt"}
                 address={home.footerAdress}
@@ -113,11 +203,10 @@ export default async function RootLayout({
                 {logoUrl ? (
                   <Image
                     src={logoUrl}
-                    alt="Ekhagens Golfrestaurang logga"
+                    alt="Ekhagens Restaurang logga"
                     width={52}
                     height={52}
                     className="h-12 w-12 rounded-full border border-amber-100/30 bg-white/90 object-contain p-1"
-                    unoptimized
                   />
                 ) : null}
                 <p className="footer-title">{home.footerKolumn1Rubrik}</p>
@@ -153,7 +242,6 @@ export default async function RootLayout({
                         width={22}
                         height={22}
                         className="h-5 w-5 rounded-sm bg-white/90 object-contain p-0.5"
-                        unoptimized
                       />
                     ) : null}
                     {home.footerSkapadAvText}
@@ -168,3 +256,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

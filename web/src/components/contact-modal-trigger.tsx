@@ -70,7 +70,7 @@ export default function ContactModalTrigger({
             Kontakt
           </p>
           <h3 className="mt-1 font-[var(--font-playfair)] text-2xl text-[var(--brand)]">
-            {title || "Ekhagens Golfrestaurang"}
+            {title || "Ekhagens Restaurang"}
           </h3>
         </div>
 
@@ -78,7 +78,7 @@ export default function ContactModalTrigger({
           type="button"
           onClick={() => setOpen(false)}
           className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-white/85 text-zinc-700 transition hover:bg-white"
-          aria-label="Stang kontaktmodal"
+          aria-label="Stäng kontaktmodal"
         >
           <svg
             viewBox="0 0 24 24"
@@ -185,7 +185,7 @@ export default function ContactModalTrigger({
                   <circle cx="12" cy="12" r="8" />
                   <path d="M12 8v4l2.5 1.8" />
                 </svg>
-                {openingHoursTitle || "Oppettider"}
+                {openingHoursTitle || "Öppettider"}
               </p>
               {openingHoursRow1 ? <p className="mt-1">{openingHoursRow1}</p> : null}
               {openingHoursRow2 ? <p>{openingHoursRow2}</p> : null}
@@ -199,7 +199,7 @@ export default function ContactModalTrigger({
             onClick={() => setOpen(false)}
             className="w-full rounded-full border border-[var(--line)] bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
           >
-            Stang
+            Stäng
           </button>
         </div>
       </div>

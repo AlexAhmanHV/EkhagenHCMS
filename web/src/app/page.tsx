@@ -1,24 +1,41 @@
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getMenuPdfFallbacks, getRandomUploadImages } from "@/lib/local-images";
+import { absoluteUrl, siteName } from "@/lib/seo";
 import {
   getArticles,
   getHomepageContent,
-  strapiBaseUrl,
   type Article,
 } from "@/lib/strapi";
 
-function toCmsUrl(relativePath: string) {
-  if (!relativePath) {
-    return "";
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomepageContent();
+  const title = siteName;
+  const description = home.heroDescription || "Välkommen till Ekhagens Restaurang.";
+  const image = home.heroImageUrl || undefined;
 
-  if (relativePath.startsWith("http://") || relativePath.startsWith("https://")) {
-    return relativePath;
-  }
-
-  return `${strapiBaseUrl}${relativePath}`;
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: absoluteUrl("/"),
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/"),
+      type: "website",
+      images: image ? [{ url: image }] : [],
+      locale: "sv_SE",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : [],
+    },
+  };
 }
 
 export default async function Home() {
@@ -33,16 +50,10 @@ export default async function Home() {
     errorMessage = error instanceof Error ? error.message : "Okant fel.";
   }
 
-  const randomUploads = await getRandomUploadImages(14);
-  const pdfFallbacks = await getMenuPdfFallbacks();
-  const heroImage = home.heroImageUrl || (randomUploads[0] ? toCmsUrl(randomUploads[0]) : "");
-  const menuImages = randomUploads.slice(1, 4).map(toCmsUrl);
-  const galleryImages =
-    home.galleryImageUrls.length > 0
-      ? home.galleryImageUrls
-      : randomUploads.slice(4, 10).map(toCmsUrl);
-  const lunchMenuPdf = home.lunchmenyPdfUrl || toCmsUrl(pdfFallbacks.lunchPdf);
-  const dinnerMenuPdf = home.kvallsmenyPdfUrl || toCmsUrl(pdfFallbacks.dinnerPdf);
+  const heroImage = home.heroImageUrl;
+  const galleryImages = home.galleryImageUrls;
+  const lunchMenuPdf = home.lunchmenyPdfUrl;
+  const dinnerMenuPdf = home.kvallsmenyPdfUrl;
   const lunchMenuPdfEmbed = lunchMenuPdf
     ? `/api/pdf-proxy?src=${encodeURIComponent(lunchMenuPdf)}`
     : "";
@@ -75,78 +86,42 @@ export default async function Home() {
                 {home.heroDescription}
               </p>
             ) : null}
-            {home.visaKnappToppen || home.visaSekundarKnappToppen ? (
-              <div className="flex flex-wrap gap-3 pt-2">
-                {home.visaKnappToppen ? (
-                  <a className="cta-btn" href={home.heroPrimaryCtaHref}>
-                    {home.heroPrimaryCtaLabel}
-                  </a>
-                ) : null}
-                {home.visaSekundarKnappToppen ? (
-                  <Link
-                    href="#cms"
-                    className="rounded-full border border-white/45 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
-                  >
-                    {home.heroSecondaryCtaLabel}
-                  </Link>
-                ) : null}
-              </div>
-            ) : null}
           </div>
 
-          <div className="space-y-4">
+          <div>
             {home.visaBildToppen && heroImage ? (
               <div className="overflow-hidden rounded-2xl border border-white/30">
                 <Image
                   src={heroImage}
-                  alt={home.heroImageAlt || "Golfrestaurang"}
+                  alt={home.heroImageAlt || "Uteservering på Ekhagens Restaurang"}
                   width={1080}
                   height={720}
                   className="h-56 w-full object-cover md:h-64"
-                  unoptimized
                 />
               </div>
-            ) : null}
-
-            {home.visaSchema ? (
-            <div className="section-card bg-white/10 p-5 text-sm text-emerald-50 backdrop-blur">
-              {home.visaSchemaRubrik ? (
-                <p className="font-semibold uppercase tracking-[0.2em] text-amber-200">
-                  {home.scheduleTitle}
-                </p>
-              ) : null}
-              <div className="mt-4 space-y-2">
-                {home.visaSchemaRad1 ? (
-                  <div className="flex items-center justify-between border-b border-white/20 pb-2">
-                    <span>{home.scheduleItem1Label}</span>
-                    <span>{home.scheduleItem1Time}</span>
-                  </div>
-                ) : null}
-                {home.visaSchemaRad2 ? (
-                  <div className="flex items-center justify-between border-b border-white/20 pb-2">
-                    <span>{home.scheduleItem2Label}</span>
-                    <span>{home.scheduleItem2Time}</span>
-                  </div>
-                ) : null}
-                {home.visaSchemaRad3 ? (
-                  <div className="flex items-center justify-between border-b border-white/20 pb-2">
-                    <span>{home.scheduleItem3Label}</span>
-                    <span>{home.scheduleItem3Time}</span>
-                  </div>
-                ) : null}
-                {home.visaSchemaRad4 ? (
-                  <div className="flex items-center justify-between">
-                    <span>{home.scheduleItem4Label}</span>
-                    <span>{home.scheduleItem4Time}</span>
-                  </div>
-                ) : null}
-              </div>
-            </div>
             ) : null}
           </div>
         </div>
       </section>
       ) : null}
+
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <Link className="section-card px-4 py-3 text-center text-sm font-semibold text-[var(--brand)] transition hover:bg-[color-mix(in_srgb,var(--brand)_7%,#fff)]" href="/nyheter">
+          Nyheter
+        </Link>
+        <Link className="section-card px-4 py-3 text-center text-sm font-semibold text-[var(--brand)] transition hover:bg-[color-mix(in_srgb,var(--brand)_7%,#fff)]" href="/meny">
+          Meny
+        </Link>
+        <Link className="section-card px-4 py-3 text-center text-sm font-semibold text-[var(--brand)] transition hover:bg-[color-mix(in_srgb,var(--brand)_7%,#fff)]" href="/boka">
+          Boka bord
+        </Link>
+        <Link className="section-card px-4 py-3 text-center text-sm font-semibold text-[var(--brand)] transition hover:bg-[color-mix(in_srgb,var(--brand)_7%,#fff)]" href="/kontakt">
+          Kontakt
+        </Link>
+        <Link className="section-card px-4 py-3 text-center text-sm font-semibold text-[var(--brand)] transition hover:bg-[color-mix(in_srgb,var(--brand)_7%,#fff)]" href="/om-oss">
+          Om oss
+        </Link>
+      </section>
 
       {home.visaLunchmenySektion && visibleMenuCards > 0 ? (
       <section
@@ -176,7 +151,7 @@ export default async function Home() {
             </div>
           ) : (
             <p className="mt-5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-              Ingen lunchmeny-PDF vald an i CMS.
+              Ingen lunchmeny-PDF vald än i CMS.
             </p>
           )}
         </article>
@@ -198,13 +173,13 @@ export default async function Home() {
             <div className="mt-5 overflow-hidden border-y border-[var(--line)] bg-white shadow-sm">
               <iframe
                 src={`${dinnerMenuPdfEmbed}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=page-width`}
-                title="Kvallsmeny PDF"
+                title="Kvällsmeny PDF"
                 scrolling="no"
                 className="h-[52vh] min-h-[380px] w-full md:h-[84vh] md:min-h-[720px]"
               />
             </div>
           ) : (
-            <p className="mt-5 text-sm text-zinc-500">Ingen kvallsmeny-PDF vald.</p>
+            <p className="mt-5 text-sm text-zinc-500">Ingen kvällsmeny-PDF vald.</p>
           )}
         </article>
         ) : null}
@@ -215,14 +190,13 @@ export default async function Home() {
       <section id="meny" className="grid gap-4 md:grid-cols-3">
         {home.visaMenyKort1 ? (
         <article className="section-card reveal overflow-hidden p-0">
-          {(home.menuCardOneImageUrl || menuImages[0]) ? (
+          {home.menuCardOneImageUrl ? (
             <Image
-              src={home.menuCardOneImageUrl || menuImages[0]}
-              alt={home.menuCardOneImageAlt || "Signaturratt"}
+              src={home.menuCardOneImageUrl}
+              alt={home.menuCardOneImageAlt || "Lunchrätt på Ekhagens Restaurang"}
               width={900}
               height={620}
               className="h-44 w-full object-cover"
-              unoptimized
             />
           ) : null}
           <div className="p-5">
@@ -241,14 +215,13 @@ export default async function Home() {
 
         {home.visaMenyKort2 ? (
         <article className="section-card reveal delay-1 overflow-hidden p-0">
-          {(home.menuCardTwoImageUrl || menuImages[1]) ? (
+          {home.menuCardTwoImageUrl ? (
             <Image
-              src={home.menuCardTwoImageUrl || menuImages[1]}
-              alt={home.menuCardTwoImageAlt || "Grillratt"}
+              src={home.menuCardTwoImageUrl}
+              alt={home.menuCardTwoImageAlt || "Middagsrätt på Ekhagens Restaurang"}
               width={900}
               height={620}
               className="h-44 w-full object-cover"
-              unoptimized
             />
           ) : null}
           <div className="p-5">
@@ -267,14 +240,13 @@ export default async function Home() {
 
         {home.visaMenyKort3 ? (
         <article className="section-card reveal delay-2 overflow-hidden p-0">
-          {(home.menuCardThreeImageUrl || menuImages[2]) ? (
+          {home.menuCardThreeImageUrl ? (
             <Image
-              src={home.menuCardThreeImageUrl || menuImages[2]}
+              src={home.menuCardThreeImageUrl}
               alt={home.menuCardThreeImageAlt || "Dessert"}
               width={900}
               height={620}
               className="h-44 w-full object-cover"
-              unoptimized
             />
           ) : null}
           <div className="p-5">
@@ -304,54 +276,14 @@ export default async function Home() {
             >
               <Image
                 src={imageUrl}
-                alt="Restaurangmiljo"
+                alt="Miljöbild från Ekhagens Restaurang"
                 width={900}
                 height={600}
                 className="h-52 w-full object-cover"
-                unoptimized
               />
             </div>
           ))}
         </section>
-      ) : null}
-
-      {home.visaEventSektion ? (
-      <section id="event" className="section-card reveal delay-1 p-6 md:p-8">
-        {home.visaEventBild && home.eventImageUrl ? (
-          <Image
-            src={home.eventImageUrl}
-            alt={home.eventImageAlt || "Event-bild"}
-            width={1400}
-            height={500}
-            className="mb-5 h-56 w-full rounded-xl object-cover"
-            unoptimized
-          />
-        ) : null}
-        <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
-          <div>
-            {home.visaEventOverrubrik ? (
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-                {home.eventKicker}
-              </p>
-            ) : null}
-            {home.visaEventRubrik ? (
-              <h2 className="mt-2 font-[var(--font-playfair)] text-3xl text-[var(--brand)]">
-                {home.eventTitle}
-              </h2>
-            ) : null}
-            {home.visaEventText ? (
-              <p className="mt-3 max-w-3xl text-zinc-700">
-                {home.eventDescription}
-              </p>
-            ) : null}
-          </div>
-          {home.visaEventKnapp ? (
-            <a className="cta-btn inline-block text-center" href={home.eventCtaHref}>
-              {home.eventCtaLabel}
-            </a>
-          ) : null}
-        </div>
-      </section>
       ) : null}
 
       {home.visaNyheterSektion ? (
@@ -363,28 +295,23 @@ export default async function Home() {
                 {home.cmsKicker}
               </p>
             ) : null}
-            {home.visaNyheterRubrik ? (
-              <h2 className="font-[var(--font-playfair)] text-3xl text-[var(--brand)]">
-                {home.cmsTitle}
-              </h2>
-            ) : null}
           </div>
         </div>
 
         <div className="space-y-4 p-5 md:p-6">
         {isEnabled ? (
           <div className="inline-flex rounded-full border border-amber-300 bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
-            Preview-lage aktivt
+            Preview-läge aktivt
           </div>
         ) : null}
 
         {errorMessage ? (
           <article className="rounded-xl border border-red-200 bg-red-50 p-5 text-red-900">
-            <h3 className="text-lg font-semibold">Kunde inte lasa fran Strapi</h3>
+            <h3 className="text-lg font-semibold">Kunde inte läsa från Strapi</h3>
             <p className="mt-2 text-sm">{errorMessage}</p>
             <p className="mt-3 text-sm">
               Starta `npm run dev:cms`, publicera minst en artikel och kontrollera
-              Public-rattigheter.
+              Public-rättigheter.
             </p>
           </article>
         ) : null}
@@ -392,10 +319,10 @@ export default async function Home() {
         {!errorMessage && articles.length === 0 ? (
           <article className="rounded-xl border border-[var(--line)] bg-white p-5">
             <h3 className="text-lg font-semibold text-[var(--brand)]">
-              Inga artiklar an
+              Inga artiklar än
             </h3>
             <p className="mt-2 text-sm text-zinc-700">
-              Skapa en `article` i Strapi och publicera den sa visas den har.
+              Skapa en `article` i Strapi och publicera den så visas den här.
             </p>
           </article>
         ) : null}
@@ -403,10 +330,7 @@ export default async function Home() {
         {articles.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2">
             {articles.map((article, index) => {
-              const fallbackImage = randomUploads.length
-                ? toCmsUrl(randomUploads[(index + 6) % randomUploads.length])
-                : "";
-              const articleImage = article.coverUrl || fallbackImage;
+              const articleImage = article.coverUrl;
 
               return (
                 <article
@@ -418,11 +342,10 @@ export default async function Home() {
                   {articleImage ? (
                     <Image
                       src={articleImage}
-                      alt={article.coverAlt || "Matratt"}
+                      alt={article.coverAlt || "Maträtt på Ekhagens Restaurang"}
                       width={960}
                       height={620}
                       className="mb-4 h-52 w-full rounded-xl object-cover"
-                      unoptimized
                     />
                   ) : null}
                   <h3 className="font-[var(--font-playfair)] text-2xl text-[var(--brand)]">
@@ -439,7 +362,7 @@ export default async function Home() {
                     href={`/articles/${article.slug}`}
                     className="mt-4 inline-block text-sm font-semibold text-[var(--brand-2)] underline decoration-[var(--accent)] underline-offset-4"
                   >
-                    Las hela artikeln
+                    Läs hela artikeln
                   </Link>
                 </article>
               );
@@ -449,6 +372,8 @@ export default async function Home() {
         </div>
       </section>
       ) : null}
+
     </main>
   );
 }
+

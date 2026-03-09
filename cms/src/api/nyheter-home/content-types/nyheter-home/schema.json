@@ -13,8 +13,6 @@
   "attributes": {
     "visaNyheterSektion": { "type": "boolean", "default": true },
     "visaNyheterOverrubrik": { "type": "boolean", "default": true },
-    "visaNyheterRubrik": { "type": "boolean", "default": true },
-    "nyheterOverrubrik": { "type": "string" },
-    "nyheterRubrik": { "type": "string" }
+    "nyheterOverrubrik": { "type": "string" }
   }
 }

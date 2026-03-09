@@ -451,10 +451,19 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       'api::article.article'
     > &
       Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 170;
+      }>;
+    metaTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 70;
+      }>;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'Text'>;
+    seoNoIndex: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     Text: Schema.Attribute.String;
-    title: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -560,8 +569,6 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     huvudrubrikToppen: Schema.Attribute.String;
-    knappLankToppen: Schema.Attribute.String;
-    knappTextToppen: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -570,16 +577,6 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     overrubrikToppen: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    schemaRad1Text: Schema.Attribute.String;
-    schemaRad1Tid: Schema.Attribute.String;
-    schemaRad2Text: Schema.Attribute.String;
-    schemaRad2Tid: Schema.Attribute.String;
-    schemaRad3Text: Schema.Attribute.String;
-    schemaRad3Tid: Schema.Attribute.String;
-    schemaRad4Text: Schema.Attribute.String;
-    schemaRad4Tid: Schema.Attribute.String;
-    schemaRubrik: Schema.Attribute.String;
-    sekundarKnappTextToppen: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -588,18 +585,7 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
     visaBildToppen: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     visaHuvudrubrikToppen: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
-    visaKnappToppen: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
     visaOverrubrikToppen: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaSchema: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaSchemaRad1: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaSchemaRad2: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaSchemaRad3: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaSchemaRad4: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaSchemaRubrik: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaSekundarKnappToppen: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
     visaToppen: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
@@ -679,14 +665,11 @@ export interface ApiNyheterHomeNyheterHome extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     nyheterOverrubrik: Schema.Attribute.String;
-    nyheterRubrik: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     visaNyheterOverrubrik: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaNyheterRubrik: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
     visaNyheterSektion: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
@@ -707,12 +690,6 @@ export interface ApiReklamReklam extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    eventBild: Schema.Attribute.Media<'images'>;
-    eventKnappLank: Schema.Attribute.String;
-    eventKnappText: Schema.Attribute.String;
-    eventOverrubrik: Schema.Attribute.String;
-    eventRubrik: Schema.Attribute.String;
-    eventText: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -735,15 +712,6 @@ export interface ApiReklamReklam extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    visaEventBild: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaEventKnapp: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    visaEventOverrubrik: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaEventRubrik: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaEventSektion: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<true>;
-    visaEventText: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     visaMenyKort1: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     visaMenyKort2: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     visaMenyKort3: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;

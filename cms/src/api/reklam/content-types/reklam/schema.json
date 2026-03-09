@@ -38,22 +38,6 @@
       "allowedTypes": ["images"],
       "multiple": false,
       "type": "media"
-    },
-    "visaEventSektion": { "type": "boolean", "default": true },
-    "visaEventOverrubrik": { "type": "boolean", "default": true },
-    "visaEventRubrik": { "type": "boolean", "default": true },
-    "visaEventText": { "type": "boolean", "default": true },
-    "visaEventKnapp": { "type": "boolean", "default": true },
-    "visaEventBild": { "type": "boolean", "default": true },
-    "eventOverrubrik": { "type": "string" },
-    "eventRubrik": { "type": "string" },
-    "eventText": { "type": "text" },
-    "eventKnappText": { "type": "string" },
-    "eventKnappLank": { "type": "string" },
-    "eventBild": {
-      "allowedTypes": ["images"],
-      "multiple": false,
-      "type": "media"
     }
   }
 }

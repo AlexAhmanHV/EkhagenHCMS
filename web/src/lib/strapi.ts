@@ -32,13 +32,25 @@ type ApiArticle = {
   id?: number;
   documentId?: string;
   title?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  seoNoIndex?: boolean;
   slug?: string;
   content?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
   cover?: ApiImage;
   attributes?: {
     title?: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    seoNoIndex?: boolean;
     slug?: string;
     content?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    publishedAt?: string;
     cover?: ApiImage;
   };
 };
@@ -211,10 +223,15 @@ class StrapiRequestError extends Error {
 export type Article = {
   id: string;
   title: string;
+  metaTitle: string;
+  metaDescription: string;
+  seoNoIndex: boolean;
   slug: string;
   content: string;
   coverUrl: string;
   coverAlt: string;
+  publishedAt: string;
+  updatedAt: string;
 };
 
 export type HomepageContent = {
@@ -393,17 +410,27 @@ function extractImage(image: ApiImage | undefined) {
 
 function mapArticle(raw: ApiArticle): Article {
   const title = raw.title ?? raw.attributes?.title ?? "(utan titel)";
+  const metaTitle = raw.metaTitle ?? raw.attributes?.metaTitle ?? "";
+  const metaDescription = raw.metaDescription ?? raw.attributes?.metaDescription ?? "";
+  const seoNoIndex = raw.seoNoIndex ?? raw.attributes?.seoNoIndex ?? false;
   const slug = raw.slug ?? raw.attributes?.slug ?? "utan-slug";
   const content = raw.content ?? raw.attributes?.content ?? "";
+  const publishedAt = raw.publishedAt ?? raw.attributes?.publishedAt ?? "";
+  const updatedAt = raw.updatedAt ?? raw.attributes?.updatedAt ?? "";
   const cover = extractImage(raw.cover ?? raw.attributes?.cover);
 
   return {
     id: raw.documentId ?? String(raw.id ?? `${slug}-${title}`),
     title,
+    metaTitle,
+    metaDescription,
+    seoNoIndex,
     slug,
     content,
     coverUrl: cover.coverUrl,
     coverAlt: cover.coverAlt,
+    publishedAt,
+    updatedAt,
   };
 }
 
@@ -625,13 +652,13 @@ export async function getHomepageContent(): Promise<HomepageContent> {
     visaFooterKolumn3: true,
     visaFooterSkapadAv: true,
 
-    heroKicker: "Ekhagens Golfrestaurang",
+    heroKicker: "Ekhagens Restaurang",
     heroTitle: "Smaker av skog och fairway",
     heroDescription:
-      "En modern golfrestaurang med nordiska ratter, weekend-brunch och kvallsservering intill 18:e green.",
+      "En modern golfrestaurang med nordiska rätter, weekend-brunch och kvällsservering intill 18:e green.",
     heroPrimaryCtaLabel: "Ring och boka",
     heroPrimaryCtaHref: "tel:+46123456789",
-    heroSecondaryCtaLabel: "Se nyheter fran koket",
+    heroSecondaryCtaLabel: "Se nyheter från köket",
     heroImageUrl: "",
     heroImageAlt: "Hero-bild",
     scheduleTitle: "Dagens spelschema",
@@ -644,7 +671,7 @@ export async function getHomepageContent(): Promise<HomepageContent> {
     scheduleItem4Label: "Chef's table",
     scheduleItem4Time: "19:00",
     menuCardOneTitle: "Smoked trout brioche",
-    menuCardOneLabel: "Signaturratt",
+    menuCardOneLabel: "Signaturrätt",
     menuCardOneText: "Varmrokt regnbage, pepparrotscreme och picklad gurka.",
     menuCardOneImageUrl: "",
     menuCardOneImageAlt: "Menykort ett",
@@ -661,31 +688,31 @@ export async function getHomepageContent(): Promise<HomepageContent> {
     eventKicker: "Event",
     eventTitle: "Fredagskvall: Jazz pa terrassen",
     eventDescription:
-      "Levande musik, 5-ratters sharing menu och panoramavy over banan. Begransat antal platser.",
+      "Levande musik, 5-rätters sharing menu och panoramavy över banan. Begränsat antal platser.",
     eventCtaLabel: "Reservera 18:30",
     eventCtaHref: "tel:+46123456789",
     eventImageUrl: "",
     eventImageAlt: "Event-bild",
-    cmsKicker: "Live fran Strapi",
-    cmsTitle: "Nytt fran koket",
-    lunchmenyRubrik: "Lunchmeny den har veckan",
+    cmsKicker: "Live från Strapi",
+    cmsTitle: "Nytt från köket",
+    lunchmenyRubrik: "Lunchmeny den här veckan",
     lunchmenyBeskrivning:
-      "Uppdateras varje vecka. Klicka for att oppna eller ladda ner aktuell PDF.",
+      "Uppdateras varje vecka. Klicka för att öppna eller ladda ner aktuell PDF.",
     lunchmenyPdfUrl: "",
-    lunchmenyKnappText: "Oppna lunchmeny (PDF)",
-    kvallsmenyRubrik: "Kvallsmeny",
+    lunchmenyKnappText: "Öppna lunchmeny (PDF)",
+    kvallsmenyRubrik: "Kvällsmeny",
     kvallsmenyBeskrivning:
-      "Fastare meny for kvallen. Byts vid behov och kan laddas upp som ny PDF.",
+      "Fastare meny för kvällen. Byts vid behov och kan laddas upp som ny PDF.",
     kvallsmenyPdfUrl: "",
-    kvallsmenyKnappText: "Oppna kvallsmeny (PDF)",
-    footerKolumn1Rubrik: "Ekhagens Golfrestaurang",
+    kvallsmenyKnappText: "Öppna kvällsmeny (PDF)",
+    footerKolumn1Rubrik: "Ekhagens Restaurang",
     footerKolumn1Text:
-      "Modern mat i klubbhusmiljo, utsikt over fairway och green.",
-    footerKolumn2Rubrik: "Oppettider",
-    footerOppettiderRad1: "Man-fre 11:00-22:00",
-    footerOppettiderRad2: "Lor-son 09:00-23:00",
+      "Modern mat i klubbhusmiljö, utsikt över fairway och green.",
+    footerKolumn2Rubrik: "Öppettider",
+    footerOppettiderRad1: "Mån-fre 11:00-22:00",
+    footerOppettiderRad2: "Lör-sön 09:00-23:00",
     footerKolumn3Rubrik: "Kontakt",
-    footerAdress: "Bistrovagen 7, Ekhagen",
+    footerAdress: "Bistrovägen 7, Ekhagen",
     footerTelefon: "+46 123 456 789",
     footerEpost: "bokning@ekhagengolfbistro.se",
     footerSkapadAvText: "Skapad av AlexAhman.se",
