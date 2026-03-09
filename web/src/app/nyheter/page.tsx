@@ -14,7 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default async function NyheterPage() {
-  const articles = (await getArticles()).filter((article) => !article.seoNoIndex);
+  let articles = [];
+  let errorMessage = "";
+
+  try {
+    articles = (await getArticles()).filter((article) => !article.seoNoIndex);
+  } catch (error) {
+    errorMessage = error instanceof Error ? error.message : "Okänt fel vid hämtning av nyheter.";
+  }
   const breadcrumb = breadcrumbJsonLd([
     { name: "Hem", path: "/" },
     { name: "Nyheter", path: "/nyheter" },
@@ -37,7 +44,14 @@ export default async function NyheterPage() {
         </p>
       </section>
 
-      {articles.length === 0 ? (
+      {errorMessage ? (
+        <section className="section-card p-6 md:p-8">
+          <p className="text-zinc-700">Kunde inte läsa nyheter från CMS just nu.</p>
+          <p className="mt-2 text-sm text-zinc-600">{errorMessage}</p>
+        </section>
+      ) : null}
+
+      {!errorMessage && articles.length === 0 ? (
         <section className="section-card p-6 md:p-8">
           <p className="text-zinc-700">Inga publicerade artiklar just nu.</p>
         </section>
