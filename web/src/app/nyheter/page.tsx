@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { absoluteUrl, breadcrumbJsonLd, pageTitle } from "@/lib/seo";
-import { getArticles } from "@/lib/strapi";
+import { getArticles, type Article } from "@/lib/strapi";
 
 export const metadata: Metadata = {
   title: pageTitle("Nyheter"),
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NyheterPage() {
-  let articles = [];
+  let articles: Article[] = [];
   let errorMessage = "";
 
   try {
