@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Manrope, Playfair_Display } from "next/font/google";
 import ContactModalTrigger from "@/components/contact-modal-trigger";
-import { getLogoUploadImage } from "@/lib/local-images";
 import { absoluteUrl, siteName, siteUrl } from "@/lib/seo";
 import { getHomepageContent, strapiBaseUrl } from "@/lib/strapi";
 import "./globals.css";
@@ -18,13 +17,11 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
-async function getSiteLogoUrl() {
-  const logoUploadPath = await getLogoUploadImage();
-  return logoUploadPath ? `${strapiBaseUrl}${logoUploadPath}` : "";
-}
+const fixedRestaurantLogoUrl = `${strapiBaseUrl}/uploads/logo_39849e5e8f.png`;
+const fixedCreatorIconUrl = `${strapiBaseUrl}/uploads/favicon_96x96_750ca0c174.png`;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const logoUrl = await getSiteLogoUrl();
+  const logoUrl = fixedRestaurantLogoUrl;
   const description = "Golfrestaurang med lunch, kvällsmeny och nyheter från köket.";
 
   return {
@@ -65,7 +62,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const home = await getHomepageContent();
-  const logoUrl = await getSiteLogoUrl();
+  const logoUrl = fixedRestaurantLogoUrl;
+  const creatorIconUrl = home.footerSkapadAvLogoUrl || fixedCreatorIconUrl;
   const restaurantJsonLd = {
     "@context": "https://schema.org",
     "@type": "Restaurant",
@@ -235,9 +233,9 @@ export default async function RootLayout({
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 underline decoration-amber-200/70 underline-offset-4 hover:text-amber-100"
                   >
-                    {home.footerSkapadAvLogoUrl ? (
+                    {creatorIconUrl ? (
                       <Image
-                        src={home.footerSkapadAvLogoUrl}
+                        src={creatorIconUrl}
                         alt={home.footerSkapadAvLogoAlt}
                         width={22}
                         height={22}
@@ -256,4 +254,3 @@ export default async function RootLayout({
     </html>
   );
 }
-
