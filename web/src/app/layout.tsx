@@ -17,8 +17,8 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
-const fixedRestaurantLogoUrl = `${strapiBaseUrl}/uploads/logo_39849e5e8f.png`;
-const fixedCreatorIconUrl = `${strapiBaseUrl}/uploads/favicon_96x96_750ca0c174.png`;
+const fixedRestaurantLogoUrl = `${strapiBaseUrl}/uploads/logo_39849e5e8f_5f18fafab9.png`;
+const fixedCreatorIconUrl = `${strapiBaseUrl}/uploads/favicon_96x96_750ca0c174_fb0e7198bc.png`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const logoUrl = fixedRestaurantLogoUrl;
